@@ -197,8 +197,34 @@ public class Level {
 	//Your code goes here! 
 	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
 	private void water(int col, int row, Map map, int fullness) {
+		//creates a new water in the spot indicated
+		Water w = new Water (col, row, tileSize, tileset.getImage("Full_water"), this, fullness);
+		map.addTile(col, row, w);
+
+		//down if possible
+		if(row+1 < map.getTiles()[0].length && !(map.getTiles()[col+1][row] instanceof Water) && !map.getTiles()[col][row+1].isSolid()){
+		water(col, row+1, map, 0);
+		}
+    	//if we finished going down, draw left and right at fullness 2
+		else if(fullness==0 && col+1 < map.getTiles().length && !(map.getTiles()[col+1][row] instanceof Water) && !map.getTiles()[col+1][row].isSolid()) {
+			water(col+1, row, map, 2);
 		
+		if(fullness==0 && col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water) && !map.getTiles()[col+1][row].isSolid()) {
+			water(col-1, row, map, 2);
+		}
+		}
+		//right continuously at fullness 1
+		else if(col+1 < map.getTiles().length && !(map.getTiles()[col+1][row] instanceof Water) && !map.getTiles()[col+1][row].isSolid()) {
+			water(col+1, row, map, 1);
+		}
+		//left continuously at fullness 1
+		else if(col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water) && !map.getTiles()[col+1][row].isSolid()) {
+			water(col-1, row, map, 1);
+		}
 	}
+
+	
+
 
 
 
